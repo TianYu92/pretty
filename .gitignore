@@ -1,0 +1,20 @@
+# folder
+.idea/
+.settings/
+.recommenders/
+.metadata/
+build/
+dist/
+target/
+test-output/
+node_modules/
+.DS_Store/
+logs/
+
+#file
+.classpath
+.project
+*.iml
+*.log
+*log.txt
+*res.yaml

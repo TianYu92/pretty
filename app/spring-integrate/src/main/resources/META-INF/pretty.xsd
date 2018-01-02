@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+    xmlns="http://www.pretty.org/schema/pretty"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+	targetNamespace="http://www.pretty.org/schema/pretty"
+	xmlns:tns="http://www.pretty.org/schema/pretty"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+>
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans" />
+
+    <xsd:element name="service">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="interfaceName" type="xsd:string" use="required"/>
+					<xsd:attribute name="ref" type="xsd:string" use="required"/>
+					<xsd:attribute name="name" type="xsd:string" use="optional"/>
+					<xsd:attribute name="idleTimeForHeartbeat" type="xsd:long" use="optional"/>
+					<xsd:attribute name="heartbeatTimeout" type="xsd:long" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="publisher">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:group ref="publisherElements"/>
+                    <xsd:attributeGroup ref="publisherAttributes"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:group name="publisherElements">
+        <xsd:sequence>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="service"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:attributeGroup name="publisherAttributes">
+		<xsd:attribute name="port" type="xsd:string" />
+    </xsd:attributeGroup>
+
+    <xsd:element name="reference">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="interfaceName" type="xsd:string" use="required"/>
+					<xsd:attribute name="async" type="xsd:boolean" use="optional"/>
+					<xsd:attribute name="callbackId" type="xsd:string" use="optional"/>
+					<xsd:attribute name="persist" type="xsd:boolean" use="optional"/>
+					<xsd:attribute name="name" type="xsd:string" use="optional"/>
+					<xsd:attribute name="host" type="xsd:string" use="optional"/>
+					<xsd:attribute name="port" type="xsd:string" use="optional"/>
+					<xsd:attribute name="idleTimeForHeartbeat" type="xsd:long" use="optional"/>
+					<xsd:attribute name="heartbeatTimeout" type="xsd:long" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

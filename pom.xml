@@ -1,0 +1,182 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.ecnu.yt.pretty</groupId>
+	<artifactId>pretty-parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<modules>
+		<module>app/spring-integrate</module>
+		<module>app/common</module>
+		<module>app/reference</module>
+		<module>app/publisher</module>
+		<module>app/test</module>
+	</modules>
+
+	<properties>
+		<!-- spring版本号 -->
+		<spring.version>4.3.5.RELEASE</spring.version>
+		<!-- log4j日志文件管理包版本 -->
+		<slf4j.version>1.7.21</slf4j.version>
+		<log4j.version>2.7</log4j.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- common dependencies -->
+		    <dependency>
+		        <groupId>org.json</groupId>
+		        <artifactId>json</artifactId>
+		        <version>20160810</version>
+		    </dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.4</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>19.0</version>
+			</dependency>
+
+			<!-- netty & protostuff -->
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-all</artifactId>
+				<version>4.1.6.Final</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java</artifactId>
+				<version>3.2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>io.protostuff</groupId>
+				<artifactId>protostuff-runtime</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>io.protostuff</groupId>
+				<artifactId>protostuff-core</artifactId>
+				<version>1.4.0</version>
+			</dependency>
+
+			<!-- spring -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<!-- logger -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-slf4j-impl</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>3.2.0</version>
+			</dependency>
+
+			<!-- projects dependencies -->
+			<dependency>
+				<groupId>edu.ecnu.yt.pretty</groupId>
+				<artifactId>pretty-common</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.ecnu.yt.pretty</groupId>
+				<artifactId>pretty-reference</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.ecnu.yt.pretty</groupId>
+				<artifactId>pretty-publisher</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.ecnu.yt.pretty</groupId>
+				<artifactId>pretty-test</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.ecnu.yt.pretty</groupId>
+				<artifactId>pretty-spring-integrate</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+  
+	<build>  
+		<plugins>  
+	    		<plugin>  
+	        		<groupId>org.apache.maven.plugins</groupId>  
+	          	<artifactId>maven-compiler-plugin</artifactId>  
+	          	<configuration>  
+					<source>1.8</source>  
+					<target>1.8</target>
+					<compilerVersion>1.8</compilerVersion>
+					<encoding>UTF-8</encoding>
+				</configuration>  
+	      	</plugin>  
+	      	<plugin>  
+	          	<groupId>org.apache.maven.plugins</groupId>  
+	          	<artifactId>maven-resources-plugin</artifactId>  
+				<version>2.6</version>  
+				<configuration>  
+					<encoding>UTF-8</encoding><!-- 指定编码格式，否则在DOS下运行mvn命令时当发生文件资源copy时将使用系统默认使用GBK编码 -->  
+		        </configuration>  
+	    		</plugin>  
+	    		<plugin>  
+		        <groupId>com.zenjava</groupId>  
+		        <artifactId>javafx-maven-plugin</artifactId>  
+		        <version>2.0</version>  
+		        <configuration>  
+		            <mainClass>edu.ecnu.yt.cvplatform.Main</mainClass>  
+		        </configuration>  
+	        		<dependencies>  
+		            <dependency>  
+		                <groupId>org.twdata.maven</groupId>  
+		                <artifactId>mojo-executor</artifactId>  
+		                <version>2.1.0</version>  
+		            </dependency>  
+		        </dependencies>  
+	    		</plugin>  
+		</plugins>  
+	</build> 
+</project>
