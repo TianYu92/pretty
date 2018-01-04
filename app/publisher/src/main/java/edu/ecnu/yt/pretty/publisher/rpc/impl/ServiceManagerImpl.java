@@ -62,10 +62,10 @@ public final class ServiceManagerImpl implements ServiceManager {
                 RequestBody body = request.body();
                 String serviceName = body.getServiceName();
                 PrettyService service = services.get(serviceName);
-                if (LOGGER.isInfoEnabled()) {
-                  LOGGER.info("recieve RPC service: {}, method: {}, params: {}",
-						  serviceName, body.getMethod(), ArrayUtils.toString(body.getParams()));
-                }
+//                if (LOGGER.isInfoEnabled()) {
+//                  LOGGER.info("recieve RPC service: {}, method: {}, params: {}",
+//					  serviceName, body.getMethod(), ArrayUtils.toString(body.getParams()));
+//                }
                 if (service == null) {
                     throw new PrettyRpcException(Code.SERVICE_EXECUTION_ERROR, "service[" + serviceName + "] is not published yet.");
                 }

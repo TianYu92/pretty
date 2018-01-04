@@ -10,30 +10,14 @@
     	">
 	
 	<bean id="testBean" class="edu.ecnu.yt.pretty.test.TestServiceImpl" />
-	<bean id="testBean2" class="edu.ecnu.yt.pretty.test.TestServiceImpl" />
-	<bean id="callback1" class="edu.ecnu.yt.pretty.test.TestCallback" />
 	<bean id="executorManager" class="edu.ecnu.yt.pretty.reference.service.ExecutorManager" destroy-method="destroy" />
 	
 	<pretty:publisher id="publisher" port="1234">
 		<pretty:service
 			interfaceName="edu.ecnu.yt.pretty.test.TestService"
 			name="test" 
-			ref="testBean" 
-		/>
-		<pretty:service
-				interfaceName="edu.ecnu.yt.pretty.test.TestService"
-				name="test2"
-				ref="testBean2"
+			ref="testBean"
 		/>
 	</pretty:publisher>
-
-	<!--<pretty:reference id="ref1" async="true" callbackId="callback1"-->
-					  <!--port="1234" interface="edu.ecnu.yt.pretty.test.TestService"-->
-					  <!--name="test"/>-->
-	<pretty:reference id="ref2" port="1234" interfaceName="edu.ecnu.yt.pretty.test.TestService" name="test2"/>
-	<pretty:reference id="ref3" async="true" callbackId="callback1"
-					  port="1234" interfaceName="edu.ecnu.yt.pretty.test.TestService"
-					  persist="true"
-					  name="test"/>
 
 </beans>

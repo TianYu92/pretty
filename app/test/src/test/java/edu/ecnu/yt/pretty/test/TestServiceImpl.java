@@ -10,8 +10,8 @@ import edu.ecnu.yt.pretty.common.exceptions.PrettyRpcException;
 public class TestServiceImpl implements TestService {
 
 	@Override
-	public TestPOJO hello() {
-		return null;
+	public TestPOJO hello(TestPOJO testPOJO) {
+		return testPOJO;
 	}
 
 	@Override

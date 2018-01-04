@@ -12,10 +12,9 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @author yt
  * @date 2017-12-23 22:57:13
  */
-public class PrettyMessageEncoder extends MessageToByteEncoder<PrettyMessage> {
-	
-	ByteBuf encodeHeader(PrettyHeader header, int bodySize) {
-		ByteBuf buf = PooledByteBufAllocator.DEFAULT.buffer(PrettyHeader.SIZE);
+public class PrettyMessageEncoder extends MessageToByteEncoder<PrettyMessage<?>> {
+		
+	public void encodeHeader(ByteBuf buf, PrettyHeader header, int bodySize) {
 		buf.writeShort(header.magic()); // 2byte
 		buf.writeShort(header.version()); // 2byte
 		buf.writeByte(header.messageType().value()); // 1byte
@@ -25,7 +24,6 @@ public class PrettyMessageEncoder extends MessageToByteEncoder<PrettyMessage> {
 		buf.writeLong(header.messageId()); // 8byte
 		buf.writeInt(bodySize); // 4byte
 		// 20byte -> 160bit.
-		return buf;
 	}
 
 	/**
@@ -39,9 +37,8 @@ public class PrettyMessageEncoder extends MessageToByteEncoder<PrettyMessage> {
 	}
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, PrettyMessage msg, ByteBuf out) throws Exception {
-		ByteBuf headerBuf = null;
-		
+	protected void encode(ChannelHandlerContext ctx, PrettyMessage<?> msg, ByteBuf out) throws Exception {
+				
 		byte[] bodyBuf = null;
 		int bodySize = 0;
 		
@@ -50,16 +47,11 @@ public class PrettyMessageEncoder extends MessageToByteEncoder<PrettyMessage> {
 			bodySize = bodyBuf.length;
 		}
 		
-		headerBuf = encodeHeader(msg.header(), bodySize);
-		
-		ByteBuf reqBuf = PooledByteBufAllocator.DEFAULT.buffer(bodySize + headerBuf.readableBytes());
-		reqBuf.writeBytes(headerBuf);
+		encodeHeader(out, msg.header(), bodySize);
 		
 		if (bodySize > 0) {
-			reqBuf.writeBytes(bodyBuf);
+			out.writeBytes(bodyBuf);
 		}
-		
-        out.writeBytes(reqBuf);
 	}
 
 	/**

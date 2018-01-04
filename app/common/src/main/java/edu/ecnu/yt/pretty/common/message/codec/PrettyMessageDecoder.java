@@ -17,10 +17,9 @@ import io.netty.handler.codec.ByteToMessageDecoder;
  * @date 2017-12-13 20:44:35
  */
 public abstract class PrettyMessageDecoder<T> extends ByteToMessageDecoder {
-	
 	protected abstract Class<T> getBodyType();
 
-	protected abstract PrettyMessage buildMessage(PrettyHeader header, T body);
+	protected abstract PrettyMessage<T> buildMessage(PrettyHeader header, T body);
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
@@ -30,9 +29,9 @@ public abstract class PrettyMessageDecoder<T> extends ByteToMessageDecoder {
 		T body = null;
 
 		if (bodySize > 0) {
-			byte[] bodyBuf = new byte[bodySize];
-			msg.readBytes(bodyBuf);
-			body = ProtostuffUtil.deserializer(bodyBuf, getBodyType());
+			byte[] bytes = new byte[msg.readableBytes()];
+			msg.readBytes(bytes);
+			body = ProtostuffUtil.deserializer(bytes, getBodyType());
 		}
 
 		out.add(buildMessage(header, body));
@@ -42,31 +41,36 @@ public abstract class PrettyMessageDecoder<T> extends ByteToMessageDecoder {
 
 		int headerSize = PrettyHeader.SIZE;
 		ByteBuf headerBuf = PooledByteBufAllocator.DEFAULT.buffer(headerSize, headerSize);
+		try {
+			headerBuf.writeBytes(buf, headerSize);
 
-		headerBuf.writeBytes(buf, headerSize);
+			// crc code check
+			if (headerBuf.readShort() != PrettyHeader.MAGIC_NUMBER) {
+				throw new PrettyRpcException(Code.CODEC_ERROR, "Magic Number错误");
+			}
 
-		// crc code check
-		if (headerBuf.readShort() != PrettyHeader.MAGIC_NUMBER) {
-			throw new PrettyRpcException(Code.CODEC_ERROR, "Magic Number错误");
+			short version = headerBuf.readShort();
+			PrettyHeader.MessageType msgType = PrettyHeader.MessageType.valueOf(headerBuf.readByte());
+			PrettyHeader.ConnectionType connectionType = PrettyHeader.ConnectionType.valueOf(headerBuf.readByte());
+
+			// discard reserved bytes
+			headerBuf.skipBytes(PrettyHeader.RESERVED);
+			long messageId = headerBuf.readLong();
+			int bodySize = headerBuf.readInt();
+
+			PrettyHeader.Builder builder = PrettyHeader.newBuilder();
+			PrettyHeader header = builder.setBodySize(bodySize)
+					.setMessageId(messageId)
+					.setMessageType(msgType)
+					.setConnectionType(connectionType)
+					.setVersion(version)
+					.build();
+			
+			return header;
+		} finally {
+			headerBuf.release();
 		}
-
-		short version = headerBuf.readShort();
-		PrettyHeader.MessageType msgType = PrettyHeader.MessageType.valueOf(headerBuf.readByte());
-		PrettyHeader.ConnectionType connectionType = PrettyHeader.ConnectionType.valueOf(headerBuf.readByte());
-
-		// discard reserved bytes
-		headerBuf.skipBytes(PrettyHeader.RESERVED);
-		long messageId = headerBuf.readLong();
-		int bodySize = headerBuf.readInt();
-
-		PrettyHeader.Builder builder = PrettyHeader.newBuilder();
-		PrettyHeader header = builder.setBodySize(bodySize)
-				.setMessageId(messageId)
-				.setMessageType(msgType)
-				.setConnectionType(connectionType)
-				.setVersion(version)
-				.build();
-		return header;
+		
 	}
 
 }

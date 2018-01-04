@@ -119,6 +119,7 @@ public class ReferenceHandler extends SimpleChannelInboundHandler<PrettyResponse
                 }
             });
         }
+        ctx.fireChannelRead(resp);
         // TODO handle { future == null }
     }
 

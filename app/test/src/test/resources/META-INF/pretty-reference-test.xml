@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:pretty="http://www.pretty.org/schema/pretty"
+    xsi:schemaLocation="
+    		http://www.springframework.org/schema/beans 
+    		http://www.springframework.org/schema/beans/spring-beans.xsd
+    		http://www.pretty.org/schema/pretty
+    		http://www.pretty.org/schema/pretty.xsd
+    	">
+    	
+	<bean id="executorManager" class="edu.ecnu.yt.pretty.reference.service.ExecutorManager" destroy-method="destroy" />
+
+	<pretty:reference id="ref" port="1234" interfaceName="edu.ecnu.yt.pretty.test.TestService" name="test"/>
+
+</beans>

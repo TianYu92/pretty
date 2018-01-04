@@ -11,7 +11,7 @@ public interface TestService {
 	 *
 	 * @return the test pojo
 	 */
-	TestPOJO hello();
+	TestPOJO hello(TestPOJO testPOJO);
 
 	/**
 	 * Oops test pojo.
