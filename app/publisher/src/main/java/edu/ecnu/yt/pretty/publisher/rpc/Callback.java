@@ -1,7 +1,7 @@
 /**
  * Alipay.com Inc. Copyright (c) 2004-2017 All Rights Reserved.
  */
-package edu.ecnu.yt.pretty.common.service;
+package edu.ecnu.yt.pretty.publisher.rpc;
 
 /**
  *

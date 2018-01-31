@@ -32,10 +32,10 @@ public class ReferenceHandler extends SimpleChannelInboundHandler<PrettyResponse
      *
      * @return the boolean
      */
-    @Override
-    public boolean isSharable() {
-        return true;
-    }
+//    @Override
+//    public boolean isSharable() {
+//        return true;
+//    }
 
     /**
      * Channel active.
@@ -55,7 +55,7 @@ public class ReferenceHandler extends SimpleChannelInboundHandler<PrettyResponse
      * @throws Exception the exception
      */
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         this.ctx = null;
     }
 
@@ -79,7 +79,6 @@ public class ReferenceHandler extends SimpleChannelInboundHandler<PrettyResponse
         registerTimeoutTask(messageId);
 
         ctx.writeAndFlush(request);
-
         return future;
     }
 

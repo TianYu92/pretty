@@ -39,18 +39,18 @@ public abstract class AbstractReferenceConnector implements ReferenceConnector {
     private final String host;
     private final int    port;
     protected Channel channel;
-
-    /**
-     * Constructor.
-     */
-    public AbstractReferenceConnector(ExecutorManager executorManager, String host, int port) {
+    
+	public AbstractReferenceConnector(ExecutorManager executorManager, String host, int port, boolean lazyConnect) {
         this.host = host;
         this.port = port;
         this.executorManager = executorManager;
         init();
-    }
+        if (!lazyConnect) {
+        	connect();
+        }
+	}
 
-    private void init() {
+	private void init() {
         bt.group(executorManager.getNioEventLoopGroup())
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)

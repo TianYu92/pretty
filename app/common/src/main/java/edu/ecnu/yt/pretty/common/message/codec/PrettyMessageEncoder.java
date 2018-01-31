@@ -4,7 +4,6 @@ import edu.ecnu.yt.pretty.common.message.PrettyHeader;
 import edu.ecnu.yt.pretty.common.message.PrettyMessage;
 import edu.ecnu.yt.pretty.common.util.ProtostuffUtil;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 

@@ -4,18 +4,11 @@
 package edu.ecnu.yt.pretty.reference.connector.impl;
 
 import edu.ecnu.yt.pretty.common.message.PrettyHeader;
-import edu.ecnu.yt.pretty.common.message.PrettyRequest;
-import edu.ecnu.yt.pretty.common.message.PrettyResponse;
-import edu.ecnu.yt.pretty.common.message.RequestBody;
 import edu.ecnu.yt.pretty.reference.connector.impl.handler.ReferenceHandler;
 import edu.ecnu.yt.pretty.reference.service.ExecutorManager;
-import io.netty.channel.Channel;
-import io.netty.channel.nio.NioEventLoopGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -38,9 +31,13 @@ public class TransientReferenceConnector extends AbstractReferenceConnector {
      * @param port            the port
      */
     public TransientReferenceConnector(ExecutorManager executorManager, String host, int port) {
-        super(executorManager, host, port);
+        super(executorManager, host, port, true);
     }
-
+    
+    public TransientReferenceConnector(ExecutorManager executorManager, String host, int port, boolean lazyConnect) {
+        super(executorManager, host, port, lazyConnect);
+    }
+    
     @Override
     protected PrettyHeader.ConnectionType getConnectionType() {
         return PrettyHeader.ConnectionType.SHORT;

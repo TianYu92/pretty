@@ -21,7 +21,7 @@ public class PrettyResponseDecoder extends PrettyMessageDecoder<ResponseBody> {
     }
 
     @Override
-    protected PrettyMessage buildMessage(PrettyHeader header, ResponseBody body) {
+    protected PrettyMessage<ResponseBody> buildMessage(PrettyHeader header, ResponseBody body) {
         return new PrettyResponse(header, body);
     }
 

@@ -39,29 +39,38 @@ public class PersistentReferenceConnector extends AbstractReferenceConnector {
     public PersistentReferenceConnector(ExecutorManager executorManager,
                                         String host, int port, long idleTimeForHeartbeat,
                                         long heartbeatTimeout) {
-        super(executorManager, host, port);
-        this.idleTimeForHeartbeat = idleTimeForHeartbeat;
-        this.heartbeatTimeout = heartbeatTimeout;
+    	this(executorManager, host, port, port, port, true);
     }
 
-    /**
+    public PersistentReferenceConnector(ExecutorManager executorManager, String host, 
+    		int port, int idleTimeForHeartbeat, int heartbeatTimeout, boolean lazyConnect) {
+        super(executorManager, host, port, lazyConnect);
+        this.idleTimeForHeartbeat = idleTimeForHeartbeat;
+        this.heartbeatTimeout = heartbeatTimeout;
+	}
+
+	/**
      * use dcl to increase spent.
      */
     @Override
     public void connect() {
-        if (channel == null || !channel.isActive()) {
+        if (channel == null) {
             synchronized (this) {
-                if (channel == null || !channel.isActive()) {
+                if (channel == null) {
                     super.connect();
                     this.handler = this.channel.pipeline().get(ReferenceHandler.class);
                     try {
                         doHandshake();
                     } catch (Throwable e) {
+                        LOGGER.warn("handshake failed.");                    	
                         this.channel.close();
                         this.channel = null;
                     }
                 }
             }
+        } else if (!channel.isActive()) {
+        	channel.close();
+        	connect();
         }
     }
 
@@ -79,8 +88,10 @@ public class PersistentReferenceConnector extends AbstractReferenceConnector {
                 LOGGER.debug("persist connection connected");
             }
         } catch (InterruptedException | ExecutionException e) {
+            LOGGER.warn("长连接模式握手失败:连接中断");
             throw new PrettyRpcException(Code.CONNECT_ERROR, "长连接模式握手失败:连接中断 ", e);
         } catch (TimeoutException e) {
+            LOGGER.warn("长连接模式握手失败:超时");
             throw new PrettyRpcException(Code.CONNECT_ERROR, "长连接模式握手失败:超时 ", e);
         }
     }

@@ -12,13 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author yutian
  * @date 2017/12/03
  */  
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"unchecked"})
 public class ProtostuffUtil {
 
     private static Map<Class<?>, Schema<?>> cachedSchema = new ConcurrentHashMap<Class<?>, Schema<?>>();
 
     private static <T> Schema<T> getSchema(Class<T> clazz) {
-        @SuppressWarnings("unchecked")
         Schema<T> schema = (Schema<T>) cachedSchema.get(clazz);
         if (schema == null) {
             schema = RuntimeSchema.getSchema(clazz);
@@ -36,7 +35,6 @@ public class ProtostuffUtil {
      * @return
      */
     public static <T> byte[] serializer(T obj) {
-        @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>) obj.getClass();
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {

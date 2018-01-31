@@ -1,7 +1,6 @@
 package edu.ecnu.yt.pretty.publisher.rpc;
 
 import edu.ecnu.yt.pretty.common.message.PrettyRequest;
-import edu.ecnu.yt.pretty.common.service.Callback;
 
 /**
  * @author yt

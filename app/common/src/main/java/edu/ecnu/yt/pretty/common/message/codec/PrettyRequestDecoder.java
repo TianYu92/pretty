@@ -20,7 +20,7 @@ public class PrettyRequestDecoder extends PrettyMessageDecoder<RequestBody> {
     }
 
     @Override
-    protected PrettyMessage buildMessage(PrettyHeader header, RequestBody body) {
+    protected PrettyMessage<RequestBody> buildMessage(PrettyHeader header, RequestBody body) {
         return new PrettyRequest(header, body);
     }
 
